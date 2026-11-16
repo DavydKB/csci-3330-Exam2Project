@@ -1,7 +1,13 @@
 //request response
+import media from "../services/mediaServices.js";
+import trackers from "../services/trackerServices.js";
 
 const home = (req, res) => {
-    res.render("home");
+    res.render("home", {
+    media: media.getMedia(),
+    trackers: trackers.getTrackers(),
+    tagsByMediaId: {}
+});
 };
 
 const collection = (req, res) => {
