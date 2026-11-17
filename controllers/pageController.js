@@ -44,6 +44,7 @@ const details = (req, res) => {
     });
 };
 
+
 export default{
     home,
     collection,

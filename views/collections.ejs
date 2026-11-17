@@ -1,7 +1,13 @@
 <%- include("partials/header") %>
 <main class="container my-5">
-    <h1 class="mb-4">Collections</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Your Collections</h1>
 
+        <button type="button" class="btn btn-primary"
+                data-bs-toggle="modal" data-bs-target="#addMediaModal">
+            Add Media
+        </button>
+    </div>
     <!-- Categories -->
     <section class="mb-5">
         <h3 class="mb-3">Categories</h3>
@@ -35,45 +41,18 @@
     </section>
 
     <hr class="my-4">
-
+    
     <!-- Media -->
     <section>
         <h3 class="mb-3">Media Collection</h3>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
             <% media.forEach(item => { %>
-                <div class="col">
-                    <a href="/details/<%= item.id %>" class="media-card-link">
-                        <div class="card media-card h-100">
-                            <div class="row g-0 align-items-center">
-                                <div class="col-4">
-                                    <% if (item.images) { %>
-                                        <img src="<%= item.images %>"
-                                             alt="<%= item.title %>"
-                                             class="img-fluid rounded-start media-image">
-                                    <% } else { %>
-                                        <div class="image-placeholder">No Image</div>
-                                    <% } %>
-                                </div>
-
-                                <div class="col-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><%= item.title %></h5>
-                                        <p class="card-text text-muted mb-1">
-                                            <%= item.category %>
-                                        </p>
-                                        <p class="card-text">
-                                            <strong><%= item.rating %>/10</strong>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                <%- include("partials/mediaCard", { item: item }) %>
             <% }) %>
         </div>
     </section>
+<%- include("partials/addMediaModal") %>
 </main>
 
 <%- include("partials/footer") %>

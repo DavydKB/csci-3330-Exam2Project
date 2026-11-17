@@ -1,0 +1,29 @@
+<div class="col">
+    <a href="/details/<%= item.id %>" class="media-card-link">
+        <div class="card media-card h-100">
+            <div class="row g-0 align-items-center">
+                <div class="col-4">
+                    <% if (item.coverImage) { %>
+                        <img src="<%= item.coverImage %>"
+                            alt="<%= item.title %>"
+                            class="img-fluid rounded-start media-image">
+                    <% } else { %>
+                        <div class="image-placeholder">No Image</div>
+                    <% } %>
+                </div>
+
+                <div class="col-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= item.title %></h5>
+                        <p class="card-text text-muted mb-1">
+                            <%= item.category %>
+                        </p>
+                        <p class="card-text">
+                            <strong><%= item.rating %>/10</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

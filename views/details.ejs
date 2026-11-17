@@ -4,8 +4,8 @@
         <div class="row g-4">
             <!-- Cover Image -->
             <div class="col-12 col-md-4">
-                <% if (media.images) { %>
-                    <img src="<%= media.images %>" alt="<%= media.title %>" class="img-fluid rounded details-cover">
+                <% if (media.coverImage) { %>
+                    <img src="<%= media.coverImage %>" alt="<%= media.title %>" class="img-fluid rounded details-cover">
                 <% } else { %>
                     <div class="image-placeholder details-cover">No Image</div>
                 <% } %>
@@ -13,7 +13,25 @@
 
             <!-- Media Information -->
             <div class="col-12 col-md-8">
-                <h1><%= media.title %></h1>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h1 class="mb-0"><%= media.title %></h1>
+
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#editMediaModal">
+                            Edit
+                        </button>
+
+                        <form action="/media/<%= media.id %>/delete" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this media?');">
+                            <button type="submit" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
                 <p class="text-muted"><%= media.category %></p>
 
                 <h4><%= media.rating %>/10</h4>
@@ -66,9 +84,28 @@
                 <% } %>
             </div>
         </div>
+
+        <!-- Gallery -->
+        <% if (media.gallery && media.gallery.length > 0) { %>
+            <hr class="my-4">
+
+            <h3 class="mb-3">Gallery</h3>
+
+            <div class="row g-3">
+                <% media.gallery.forEach(image => { %>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <img src="<%= image %>"
+                             alt="<%= media.title %> gallery image"
+                             class="img-fluid rounded">
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+        
+<%- include("partials/editMediaModal", { media }) %>
     <% } else { %>
         <h2>Media not found</h2>
-        <a href="/collection" class="btn btn-secondary">Back to Collection</a>
+        <a href="/collections" class="btn btn-secondary">Back to Collection</a>
     <% } %>
 </main>
 <%- include("partials/footer") %>

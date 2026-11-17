@@ -1,12 +1,13 @@
 class Media{
-    constructor(id, title, category, description, entryDate, rating, images, links) {
+    constructor(id, title, category, description, entryDate, rating, coverImage, gallery, links) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.description = description;
         this.entryDate = entryDate;
         this.rating = rating;
-        this.images = images;
+        this.coverImage = coverImage;
+        this.gallery = gallery || [];
         this.links = links;
     }
 }
@@ -20,6 +21,7 @@ let mediaCollection = [ //test entries
         new Date("2026-11-16"),
         7,
         "/images/deadlock_logo.png",
+        [],
         ["https://store.steampowered.com/app/1422450/Deadlock/"]
     ),
     new Media(
@@ -30,6 +32,7 @@ let mediaCollection = [ //test entries
         new Date("2026-11-16"),
         8,
         "/images/12angrymen_poster.jpg",
+        [],
         ["https://www.imdb.com/title/tt0050083/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_12+angry+men&_ssoLoop=1"]
     ),
     new Media(
@@ -40,6 +43,7 @@ let mediaCollection = [ //test entries
         new Date("2026-11-16"),
         7.6,
         "/images/snk_s1.jpg",
+        [],
         ["https://myanimelist.net/anime/16498/Shingeki_no_Kyojin?q=snk&cat=anime"]
     ),
     new Media(
@@ -50,23 +54,25 @@ let mediaCollection = [ //test entries
         new Date("2026-11-16"),
         9,
         "/images/helck_vol1.jpg",
+        [],
         ["https://myanimelist.net/manga/77637/Helck?q=helck&cat=manga"]
     )
 ];
 
 const addMedia = (data)=>{
-    const media = new Media(
-        mediaCollection.length ? Math.max(...mediaCollection.map((media) => media.id)) + 1 : 1,
+    const newMedia = new Media(
+        mediaCollection.length + 1,
         data.title,
         data.category,
         data.description,
         new Date(),
         data.rating,
-        data.images,
+        data.coverImage,
+        data.gallery,
         data.links
     );
-    mediaCollection.push(media);
-    return media;
+    mediaCollection.push(newMedia);
+    return newMedia;
 };
 
 const getMedia = ()=>{
@@ -77,9 +83,38 @@ const getMediaById = (id) => {
     return mediaCollection.find(media => media.id === Number(id));
 };
 
+const updateMedia = (id, data) => {
+    const selectedMedia = getMediaById(id);
+    if (!selectedMedia) {
+        return null;
+    }
+
+    selectedMedia.title = data.title;
+    selectedMedia.category = data.category;
+    selectedMedia.description = data.description;
+    selectedMedia.rating = data.rating;
+    selectedMedia.coverImage = data.coverImage;
+    selectedMedia.gallery = data.gallery;
+    selectedMedia.links = data.links;
+
+    return selectedMedia;
+};
+
+const deleteMedia = (id) => {
+    const index = mediaCollection.findIndex(
+        media => media.id === Number(id)
+    );
+    if (index === -1) {
+        return null;
+    }
+    return mediaCollection.splice(index, 1)[0];
+};
+
 export default{
     Media,
     getMedia,
     addMedia,
     getMediaById,
+    updateMedia,
+    deleteMedia
 }
