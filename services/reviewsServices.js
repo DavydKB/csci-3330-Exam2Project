@@ -55,11 +55,21 @@ const deleteReview = (id)=>{
     return reviews.splice(index, 1)[0];
 };
 
+const getAllReviews = ()=>{
+    return reviews;
+};
+
+const importReviews = (data)=>{
+    reviews = data;
+    nextId = Math.max(0, ...reviews.map(r => r.id)) + 1;
+};
 export default{
     Review,
     addReview,
     getReviewsByMediaId,
     getReviewById,
     updateReview,
-    deleteReview
+    deleteReview,
+    getAllReviews,
+    importReviews,
 };

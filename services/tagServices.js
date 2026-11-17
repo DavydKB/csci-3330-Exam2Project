@@ -62,6 +62,10 @@ const deleteTag = (id)=>{
     return tags.splice(index, 1)[0];
 };
 
+const importTags = (data)=>{
+    tags = data;
+};
+
 export default{
     Tag,
     getTags,
@@ -69,4 +73,5 @@ export default{
     updateMediaTags,
     updateTag,
     deleteTag,
+    importTags,
 }

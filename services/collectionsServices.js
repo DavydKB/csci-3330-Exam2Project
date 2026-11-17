@@ -75,6 +75,12 @@ const deleteCollection = (id)=>{
 
     return collections.splice(index, 1)[0];
 };
+
+const importCollections = (data)=>{
+    collections = data;
+    nextId = Math.max(0, ...collections.map(c => c.id)) + 1;
+};
+
 export default{
     Collection,
     addCollection,
@@ -84,4 +90,5 @@ export default{
     removeMediaFromCollection,
     updateCollection,
     deleteCollection,
+    importCollections,
 }

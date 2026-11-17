@@ -60,6 +60,11 @@ const updateTracker = (mediaId, status, progress)=>{
     return selectedTracker;
 };
 
+const importTrackers = (data)=>{
+    trackers = data;
+    nextId = Math.max(0, ...trackers.map(t => t.id)) + 1;
+};
+
 export default{
     Tracker,
     getTrackers,
@@ -67,4 +72,5 @@ export default{
     addTracker,
     deleteTracker,
     updateTracker,
+    importTrackers,
 };

@@ -30,6 +30,11 @@ const upload = multer({
     }
 });
 
+const importUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 }
+});
+
 router.get("/", pageController.home);
 router.get("/collections", pageController.collection);
 router.get("/details/:id", pageController.details);
@@ -66,4 +71,6 @@ router.post("/collections/:id/media/remove", mediaController.removeMediaFromColl
 router.post("/media/:id/collections/update", mediaController.updateMediaCollections);
 router.post("/collections/:id/media/update", mediaController.updateCollectionMedia);
 
+router.get("/export", mediaController.exportData);
+router.post("/import", importUpload.single("dataFile"), mediaController.importData);
 export default router;

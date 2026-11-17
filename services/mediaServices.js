@@ -109,12 +109,25 @@ const deleteMedia = (id) => {
     }
     return mediaCollection.splice(index, 1)[0];
 };
-
+const importMedia = (data)=>{
+    mediaCollection = data.map(item => new Media(
+        item.id,
+        item.title,
+        item.category,
+        item.description,
+        new Date(item.entryDate),
+        item.rating,
+        item.coverImage,
+        item.gallery,
+        item.links
+    ));
+};
 export default{
     Media,
     getMedia,
     addMedia,
     getMediaById,
     updateMedia,
-    deleteMedia
+    deleteMedia,
+    importMedia,
 }
