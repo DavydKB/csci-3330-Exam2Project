@@ -1,13 +1,17 @@
-
 <%- include("partials/header") %>
 <main class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Your Collections</h1>
+        <h1 class="mb-0">Your Media</h1>
 
         <div class="d-flex gap-2">
             <button type="button" class="btn btn-outline-primary"
                     data-bs-toggle="modal" data-bs-target="#addTagModal">
                 Create Tag
+            </button>
+
+            <button type="button" class="btn btn-outline-primary"
+                    data-bs-toggle="modal" data-bs-target="#addCollectionModal">
+                Create Collection
             </button>
 
             <button type="button" class="btn btn-primary"
@@ -58,9 +62,9 @@
             <% tags.forEach(tag => { %>
                 <div class="d-flex gap-2 mb-2">
                     <form action="/tags/<%= tag.id %>/edit" method="POST"
-                        class="d-flex gap-2 flex-grow-1">
+                          class="d-flex gap-2 flex-grow-1">
                         <input type="text" class="form-control"
-                            name="name" value="<%= tag.name %>" required>
+                               name="name" value="<%= tag.name %>" required>
 
                         <button type="submit" class="btn btn-primary">
                             Save
@@ -76,26 +80,67 @@
             <% }) %>
         </div>
     </section>
+    <!-- Collections -->
+    <section class="mb-4">
+        <h4 class="mb-3">Your Collections</h4>
+
+        <div class="d-flex flex-wrap gap-2">
+            <% collections.forEach(collection => { %>
+                <a href="<%= selectedCollection && selectedCollection.id === collection.id
+                    ? '/collections'
+                    : `/collections?collection=${collection.id}` %>"
+                class="btn <%= selectedCollection && selectedCollection.id === collection.id
+                    ? 'btn-primary'
+                    : 'btn-outline-light' %>">
+                    <%= collection.name %>
+                </a>
+            <% }) %>
+        </div>
+
+        <% if (collections.length === 0) { %>
+            <p class="text-muted mt-2">You haven't created any collections yet.</p>
+        <% } %>
+    </section>
 
     <hr class="my-4">
 
     <!-- Media -->
     <section>
-        <h3 class="mb-3">Media Collection</h3>
-
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-            <% media.forEach(item => { %>
-                <%- include("partials/mediaCard", {
-                    item: item,
-                    tracker: trackers.find(t => t.mediaId === item.id),
-                    tags: tags.filter(tag => tag.mediaIds.includes(item.id))
-                }) %>
-            <% }) %>
-        </div>
+        <h3 class="mb-3">
+            <%= selectedCollection ? selectedCollection.name : "All Media" %>
+        </h3>
+        <% if (selectedCollection) { %>
+            <button type="button" class="btn btn-primary mb-3"
+                    data-bs-toggle="modal" data-bs-target="#manageCollectionMediaModal">
+                Manage Media
+            </button>
+        <% } %>
+        <% if (media.length > 0) { %>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                <% media.forEach(item => { %>
+                    <%- include("partials/mediaCard", {
+                        item: item,
+                        tracker: trackers.find(t => t.mediaId === item.id),
+                        tags: tags.filter(tag => tag.mediaIds.includes(item.id))
+                    }) %>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p class="text-muted">
+                This collection doesn't contain any media yet.
+            </p>
+        <% } %>
     </section>
 
     <%- include("partials/addMediaModal") %>
     <%- include("partials/addTagModal") %>
+    <%- include("partials/addCollectionModal") %>
+    <% if (selectedCollection) { %>
+    <%- include("partials/manageCollectionMediaModal", {
+        selectedCollection,
+        allMedia
+        }) %>
+    <% } %>
 </main>
 
 <%- include("partials/footer") %>

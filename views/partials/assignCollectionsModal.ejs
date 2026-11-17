@@ -1,0 +1,49 @@
+<div class="modal fade" id="assignCollectionsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/media/<%= media.id %>/collections/update" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manage Collections</h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <% if (allCollections.length > 0) { %>
+                        <% allCollections.forEach(collection => { %>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="collectionIds"
+                                       value="<%= collection.id %>"
+                                       id="collection<%= collection.id %>"
+                                       <%= collection.mediaIds.includes(media.id) ? "checked" : "" %>>
+
+                                <label class="form-check-label"
+                                       for="collection<%= collection.id %>">
+                                    <%= collection.name %>
+                                </label>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-muted">
+                            You haven't created any collections yet.
+                        </p>
+                    <% } %>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn btn-primary"
+                            <%= allCollections.length === 0 ? "disabled" : "" %>>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

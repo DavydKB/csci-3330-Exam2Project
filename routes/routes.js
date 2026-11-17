@@ -57,4 +57,13 @@ router.post("/media/:id/tags/update", mediaController.updateMediaTags);
 router.post("/tags/:id/edit", mediaController.updateTag);
 router.post("/tags/:id/delete", mediaController.deleteTag);
 
+
+router.post("/collections/add", mediaController.addCollection);
+router.post("/collections/:id/edit", mediaController.updateCollection);
+router.post("/collections/:id/delete", mediaController.deleteCollection);
+router.post("/collections/:id/media/add", mediaController.addMediaToCollection);
+router.post("/collections/:id/media/remove", mediaController.removeMediaFromCollection);
+router.post("/media/:id/collections/update", mediaController.updateMediaCollections);
+router.post("/collections/:id/media/update", mediaController.updateCollectionMedia);
+
 export default router;

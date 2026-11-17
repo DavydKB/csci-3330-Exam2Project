@@ -88,6 +88,23 @@
                     <% } %>
                 <hr>
 
+                <!-- Collections -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <% allCollections.forEach(collection => { %>
+                            <% if (collection.mediaIds.includes(media.id)) { %>
+                                <span class="badge text-bg-primary">
+                                    <%= collection.name %>
+                                </span>
+                            <% } %>
+                        <% }) %>
+
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#assignCollectionsModal">
+                            Manage Collections
+                        </button>
+                    </div>
+                </div>
                 <!-- Links -->
                 <h4>Links</h4>
                 <% if (media.links && media.links.length > 0) { %>
@@ -215,6 +232,7 @@
 
 <%- include("partials/editMediaModal", { media }) %>
 <%- include("partials/assignTagsModal", { media, tags, allTags }) %>
+<%- include("partials/assignCollectionsModal", { media, allCollections }) %>
     <% if (tracker) { %>
         <%- include("partials/editTrackerModal", { media, tracker }) %>
     <% } else { %>
