@@ -20,9 +20,11 @@
                             <%= item.category %>
                         </p>
 
-                        <p class="card-text mb-1">
-                            <strong><%= item.rating %>/10</strong>
-                        </p>
+                            <% if (item.rating !== null && item.rating !== undefined) { %>
+                                <p class="card-text mb-1">
+                                    <strong><%= item.rating %>/10</strong>
+                                </p>
+                            <% } %>
 
                         <% if (tracker) { %>
                             <p class="card-text mb-1">

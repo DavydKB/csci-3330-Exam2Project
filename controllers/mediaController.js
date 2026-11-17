@@ -4,14 +4,14 @@ import reviews from "../services/reviewsServices.js";
 import tags from "../services/tagServices.js";
 import collections from "../services/collectionsServices.js";
 
+
 const addMedia = (req, res)=>{
-    const { title, category, description, rating } = req.body;
-    // et the cover image
+    const { title, category, description, rating, status } = req.body;
+    // Get the cover image
     let coverImage = "";
     if(req.files.coverImage && req.files.coverImage.length > 0){
         coverImage = `/images/uploads/${req.files.coverImage[0].filename}`;
     }
-
     // Get gallery images
     let gallery = [];
     if(req.files.galleryImages){
@@ -19,32 +19,32 @@ const addMedia = (req, res)=>{
             gallery.push(`/images/uploads/${file.filename}`);
         });
     }
-
     // Get external links
     let links = [];
     const submittedLinks = req.body.links;
+
     if(submittedLinks){
         if(Array.isArray(submittedLinks)){
             links = submittedLinks;
-        }else{
+        } else {
             links = [submittedLinks];
         }
     }
-
+    // Add media
     const newMedia = media.addMedia({
-            title,
-            category,
-            description,
-            rating: Number(rating),
-            coverImage,
-            gallery,
-            links
+        title,
+        category,
+        description,
+        rating: rating === "" || rating === undefined ? null : Number(rating),
+        coverImage,
+        gallery,
+        links
     });
 
-    const { status } = req.body;
-    let values = req.body.values;
-    let totals = req.body.totals;
-    let units = req.body.units;
+    // Get progress
+    let values = req.body.values || [];
+    let totals = req.body.totals || [];
+    let units = req.body.units || [];
     if(!Array.isArray(values)){
         values = [values];
         totals = [totals];
@@ -53,11 +53,14 @@ const addMedia = (req, res)=>{
 
     let progress = [];
     for(let i = 0; i < values.length; i++){
+        if(values[i] === "" || !units[i] || units[i].trim() === ""){
+            continue;
+        }
         let entry = {
             value: Number(values[i]),
             unit: units[i]
         };
-        if(totals[i] !== ""){
+        if(totals[i] !== "" && totals[i] !== undefined){
             entry.total = Number(totals[i]);
         }
         progress.push(entry);
@@ -66,6 +69,7 @@ const addMedia = (req, res)=>{
     trackers.addTracker(newMedia.id, status, progress);
     res.redirect("/collections");
 };
+
 
 
 const updateMedia = (req, res)=>{
@@ -133,11 +137,12 @@ const deleteMedia = (req, res)=>{
     res.redirect("/collections");
 };
 
+
 const addTracker = (req, res)=>{
     const { status } = req.body;
-    let values = req.body.values;
-    let totals = req.body.totals;
-    let units = req.body.units;
+    let values = req.body.values || [];
+    let totals = req.body.totals || [];
+    let units = req.body.units || [];
     if(!Array.isArray(values)){
         values = [values];
         totals = [totals];
@@ -146,19 +151,23 @@ const addTracker = (req, res)=>{
 
     let progress = [];
     for(let i = 0; i < values.length; i++){
+        if(values[i] === "" || !units[i] || units[i].trim() === ""){
+            continue;
+        }
         let entry = {
             value: Number(values[i]),
             unit: units[i]
         };
-        if(totals[i] !== ""){
+        if(totals[i] !== "" && totals[i] !== undefined){
             entry.total = Number(totals[i]);
         }
         progress.push(entry);
     }
-
+    
     trackers.addTracker(req.params.id, status, progress);
     res.redirect(`/details/${req.params.id}`);
 };
+
 
 const updateTracker = (req, res)=>{
     const { status } = req.body;

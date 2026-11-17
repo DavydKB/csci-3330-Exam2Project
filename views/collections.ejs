@@ -21,18 +21,27 @@
         </div>
     </div>
 
+
     <!-- Categories -->
-    <section class="mb-5">
-        <h3 class="mb-3">Categories</h3>
+    <section class="mb-4">
+        <h4 class="mb-3">Categories</h4>
 
         <div class="d-flex flex-wrap gap-2">
-            <a href="#" class="btn btn-outline-light">All</a>
-            <a href="#" class="btn btn-outline-light">Games</a>
-            <a href="#" class="btn btn-outline-light">Movies</a>
-            <a href="#" class="btn btn-outline-light">Anime</a>
-            <a href="#" class="btn btn-outline-light">Manga</a>
+            <% const categories = ["Game", "Movie", "Anime", "Manga"]; %>
+
+            <% categories.forEach(category => { %>
+                <a href="<%= selectedCategory === category
+                    ? '/collections'
+                    : `/collections?category=${category}` %>"
+                class="btn <%= selectedCategory === category
+                    ? 'btn-primary'
+                    : 'btn-outline-light' %>">
+                    <%= category %>
+                </a>
+            <% }) %>
         </div>
     </section>
+
 
     <!-- Tags -->
     <section class="mb-4">

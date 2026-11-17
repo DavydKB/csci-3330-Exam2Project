@@ -31,19 +31,31 @@ const home = (req, res) => {
     });
 };
 
+
 const collection = (req, res)=>{
     const selectedCollectionId = req.query.collection;
+    const selectedCategory = req.query.category;
+
     let selectedCollection = null;
     let displayedMedia = media.getMedia();
+
     //Filter media if a collection was selected
     if(selectedCollectionId){
         selectedCollection = collections.getCollectionById(selectedCollectionId);
+
         if(!selectedCollection){
             return res.status(404).send("Collection not found.");
         }
+
         displayedMedia = selectedCollection.mediaIds
             .map(id => media.getMediaById(id))
             .filter(item => item !== undefined);
+    }
+    //Filter media by category if one was selected
+    else if(selectedCategory){
+        displayedMedia = displayedMedia.filter(
+            item => item.category === selectedCategory
+        );
     }
 
     res.render("collections",{
@@ -52,7 +64,8 @@ const collection = (req, res)=>{
         tags: tags.getTags(),
         trackers: trackers.getTrackers(),
         collections: collections.getCollections(),
-        selectedCollection
+        selectedCollection,
+        selectedCategory
     });
 };
 
