@@ -35,6 +35,7 @@ const home = (req, res) => {
 const collection = (req, res)=>{
     const selectedCollectionId = req.query.collection;
     const selectedCategory = req.query.category;
+    const search = req.query.search;
 
     let selectedCollection = null;
     let displayedMedia = media.getMedia();
@@ -58,6 +59,13 @@ const collection = (req, res)=>{
         );
     }
 
+    //Search media by title
+    if(search){
+        displayedMedia = displayedMedia.filter(
+            item => item.title.toLowerCase().includes(search.toLowerCase())
+        );
+    }
+
     res.render("collections",{
         media: displayedMedia,
         allMedia: media.getMedia(),
@@ -65,7 +73,8 @@ const collection = (req, res)=>{
         trackers: trackers.getTrackers(),
         collections: collections.getCollections(),
         selectedCollection,
-        selectedCategory
+        selectedCategory,
+        search
     });
 };
 
