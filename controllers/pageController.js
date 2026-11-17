@@ -25,7 +25,8 @@ const home = (req, res) => {
         inProgress,
         completed,
         recentMedia,
-        trackers: allTrackers
+        trackers: allTrackers,
+        tags: tags.getTags()
     });
 };
 

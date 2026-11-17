@@ -38,6 +38,16 @@
                                 </p>
                             <% }) %>
                         <% } %>
+
+                        <% if (tags && tags.length > 0) { %>
+                            <div class="d-flex flex-wrap gap-1 mt-2">
+                                <% tags.forEach(tag => { %>
+                                    <span class="badge text-bg-secondary">
+                                        <%= tag.name %>
+                                    </span>
+                                <% }) %>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
             </div>

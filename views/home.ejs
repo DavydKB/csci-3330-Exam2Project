@@ -85,6 +85,17 @@
                                                 </p>
                                             <% }) %>
                                         <% } %>
+
+                                        <% const assignedTags = tags.filter(tag => tag.mediaIds.includes(item.id)); %>
+                                        <% if (assignedTags.length > 0) { %>
+                                            <div class="d-flex flex-wrap gap-1 mt-2">
+                                                <% assignedTags.forEach(tag => { %>
+                                                    <span class="badge text-bg-secondary">
+                                                        <%= tag.name %>
+                                                    </span>
+                                                <% }) %>
+                                            </div>
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
@@ -113,6 +124,7 @@
             </a>
         </div>
     </section>
+
     <%- include("partials/addMediaModal") %>
 </main>
 <%- include("partials/footer") %>
