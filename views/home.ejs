@@ -1,1 +1,100 @@
-<h1>home page</h1>
+<%- include("partials/header") %>
+<main class="container my-5">
+    <!-- Welcome -->
+    <section class="mb-5">
+        <h1>Welcome back!</h1>
+        <p class="text-muted">Your personal media library at a glance.</p>
+    </section>
+
+    <!-- Statistics -->
+    <section class="mb-5">
+        <h3 class="mb-3">Your Library</h3>
+
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+            <div class="col">
+                <div class="card bg-dark border-secondary p-3">
+                    <h2><%= totalMedia %></h2>
+                    <p class="text-muted mb-0">Total Media</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card bg-dark border-secondary p-3">
+                    <h2><%= inProgress %></h2>
+                    <p class="text-muted mb-0">In Progress</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card bg-dark border-secondary p-3">
+                    <h2><%= completed %></h2>
+                    <p class="text-muted mb-0">Completed</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recently Added -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Recently Added</h3>
+            <a href="/collections" class="btn btn-outline-light btn-sm">
+                View Collections
+            </a>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+            <% recentMedia.forEach(item => { %>
+                <div class="col">
+                    <a href="/details/<%= item.id %>" class="media-card-link">
+                        <div class="card media-card h-100">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-4">
+                                    <% if (item.images) { %>
+                                        <img src="<%= item.images %>"
+                                             alt="<%= item.title %>"
+                                             class="img-fluid rounded-start media-image">
+                                    <% } else { %>
+                                        <div class="image-placeholder">No Image</div>
+                                    <% } %>
+                                </div>
+
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><%= item.title %></h5>
+                                        <p class="text-muted mb-1"><%= item.category %></p>
+                                        <p class="mb-0">
+                                            <strong><%= item.rating %>/10</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <% }) %>
+        </div>
+
+        <% if (recentMedia.length === 0) { %>
+            <p class="text-muted">No media has been added yet.</p>
+        <% } %>
+    </section>
+
+    <!-- Quick Navigation -->
+    <section>
+        <h3 class="mb-3">Quick Navigation</h3>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a href="/collections" class="btn btn-outline-light">
+                Collections
+            </a>
+
+            <a href="/collections" class="btn btn-outline-light">
+                Browse Media
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<%- include("partials/footer") %>

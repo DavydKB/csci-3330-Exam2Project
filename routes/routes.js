@@ -9,4 +9,6 @@ router.get("/", controller.home);
 router.get("/collections", controller.collection);
 router.get("/details/:id", controller.details);
 
+//router.post();
+
 export default router;

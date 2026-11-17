@@ -6,8 +6,15 @@ class Tag{
     }
 }
 
-let tags = [];
+let tags = [
+    new Tag(1,"Favorites", [1,4]),
+    new Tag(2,"Online",[1]),
+];
 
+const getTags =()=>{
+    return tags;
+}
 export default{
     Tag,
+    getTags,
 }

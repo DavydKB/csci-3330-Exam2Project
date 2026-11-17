@@ -1,1 +1,74 @@
-<h1>details page</h1>
+<%- include("partials/header") %>
+<main class="container my-5">
+    <% if (media) { %>
+        <div class="row g-4">
+            <!-- Cover Image -->
+            <div class="col-12 col-md-4">
+                <% if (media.images) { %>
+                    <img src="<%= media.images %>" alt="<%= media.title %>" class="img-fluid rounded details-cover">
+                <% } else { %>
+                    <div class="image-placeholder details-cover">No Image</div>
+                <% } %>
+            </div>
+
+            <!-- Media Information -->
+            <div class="col-12 col-md-8">
+                <h1><%= media.title %></h1>
+                <p class="text-muted"><%= media.category %></p>
+
+                <h4><%= media.rating %>/10</h4>
+
+                <!-- Tags -->
+                <div class="mb-4">
+                    <% tags.forEach(tag => { %>
+                        <span class="badge text-bg-secondary me-1"><%= tag.name %></span>
+                    <% }) %>
+                </div>
+
+                <h4>Description</h4>
+                <p><%= media.description %></p>
+
+                <hr>
+
+                <!-- Tracking -->
+                <h4>Tracking</h4>
+                <% if (tracker) { %>
+                    <p><strong>Status:</strong> <%= tracker.status %></p>
+
+                    <% if (tracker.progress) { %>
+                        <p>
+                            <strong>Progress:</strong>
+                            <%= tracker.progress.value %>
+                            <% if (tracker.progress.total) { %>
+                                / <%= tracker.progress.total %>
+                            <% } %>
+                            <%= tracker.progress.unit %>
+                        </p>
+                    <% } %>
+                <% } else { %>
+                    <p>Not Started</p>
+                <% } %>
+
+                <hr>
+
+                <!-- Links -->
+                <h4>Links</h4>
+                <% if (media.links && media.links.length > 0) { %>
+                    <% media.links.forEach(link => { %>
+                        <p>
+                            <a href="<%= link %>" target="_blank" rel="noopener noreferrer">
+                                <%= new URL(link).hostname %>
+                            </a>
+                        </p>
+                    <% }) %>
+                <% } else { %>
+                    <p>No links available.</p>
+                <% } %>
+            </div>
+        </div>
+    <% } else { %>
+        <h2>Media not found</h2>
+        <a href="/collection" class="btn btn-secondary">Back to Collection</a>
+    <% } %>
+</main>
+<%- include("partials/footer") %>
