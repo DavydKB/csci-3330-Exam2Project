@@ -48,4 +48,8 @@ router.post("/media/:id/delete", mediaController.deleteMedia);
 router.post("/media/:id/tracking/add", mediaController.addTracker);
 router.post("/media/:id/tracking/edit", mediaController.updateTracker);
 
+router.post("/media/:id/reviews/add", mediaController.addReview);
+router.post("/media/:id/reviews/:reviewId/edit", mediaController.updateReview);
+router.post("/media/:id/reviews/:reviewId/delete", mediaController.deleteReview);
+
 export default router;

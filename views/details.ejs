@@ -111,7 +111,99 @@
                 <% }) %>
             </div>
         <% } %>
-        
+
+
+            <!-- My Reviews -->
+            <section class="mt-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="mb-0">My Reviews</h3>
+                </div>
+
+                <!-- Add Review -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Add a Review</h5>
+
+                        <form action="/media/<%= media.id %>/reviews/add" method="POST">
+                            <div class="mb-3">
+                                <label for="reviewBody" class="form-label">
+                                    My Thoughts
+                                </label>
+
+                                <textarea class="form-control"
+                                        id="reviewBody"
+                                        name="bodyText"
+                                        rows="4"
+                                        placeholder="Write down your thoughts about this media..."
+                                        required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                Save Review
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Existing Reviews -->
+                <% if (reviews.length > 0) { %>
+                    <% reviews.forEach(review => { %>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p class="card-text"><%= review.bodyText %></p>
+
+                                <p class="text-muted mb-3">
+                                    <small><%= review.date.toLocaleDateString() %></small>
+                                </p>
+
+                                <div class="d-flex gap-2">
+                                    <!-- Edit Review Button -->
+                                    <button type="button"
+                                            class="btn btn-outline-primary btn-sm"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#editReview<%= review.id %>">
+                                        Edit
+                                    </button>
+
+                                    <!-- Delete Review Form -->
+                                    <form action="/media/<%= media.id %>/reviews/<%= review.id %>/delete"
+                                        method="POST"
+                                        onsubmit="return confirm('Delete this review?');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Edit Review Form -->
+                                <div class="collapse mt-3" id="editReview<%= review.id %>">
+                                    <form action="/media/<%= media.id %>/reviews/<%= review.id %>/edit"
+                                        method="POST">
+                                        <div class="mb-3">
+                                            <label for="reviewBody<%= review.id %>" class="form-label">
+                                                Edit My Thoughts
+                                            </label>
+
+                                            <textarea class="form-control"
+                                                    id="reviewBody<%= review.id %>"
+                                                    name="bodyText"
+                                                    rows="4"
+                                                    required><%= review.bodyText %></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            Save Changes
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p class="text-muted">You haven't written any reviews for this media yet.</p>
+                <% } %>
+            </section>
+
 <%- include("partials/editMediaModal", { media }) %>
     <% if (tracker) { %>
         <%- include("partials/editTrackerModal", { media, tracker }) %>

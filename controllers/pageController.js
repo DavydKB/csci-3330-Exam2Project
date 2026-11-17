@@ -2,6 +2,7 @@
 import media from "../services/mediaServices.js";
 import trackers from "../services/trackerServices.js";
 import tags from "../services/tagServices.js"
+import reviews from "../services/reviewsServices.js";
 
 const home = (req, res) => {
     const allMedia = media.getMedia();
@@ -36,13 +37,14 @@ const collection = (req, res)=>{
     });
 };
 
-const details = (req, res) => {
+const details = (req, res)=>{
     const selectedMedia = media.getMediaById(req.params.id);
 
     res.render("details", {
         media: selectedMedia,
         tracker: trackers.getTrackerByMediaId(req.params.id),
-        tags: tags.getTags().filter(t => t.mediaIds.includes(Number(req.params.id)))
+        tags: tags.getTags().filter(t => t.mediaIds.includes(Number(req.params.id))),
+        reviews: reviews.getReviewsByMediaId(req.params.id)
     });
 };
 
