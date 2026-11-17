@@ -44,6 +44,7 @@ const details = (req, res)=>{
         media: selectedMedia,
         tracker: trackers.getTrackerByMediaId(req.params.id),
         tags: tags.getTags().filter(t => t.mediaIds.includes(Number(req.params.id))),
+        allTags: tags.getTags(),
         reviews: reviews.getReviewsByMediaId(req.params.id)
     });
 };

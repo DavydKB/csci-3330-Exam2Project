@@ -52,4 +52,9 @@ router.post("/media/:id/reviews/add", mediaController.addReview);
 router.post("/media/:id/reviews/:reviewId/edit", mediaController.updateReview);
 router.post("/media/:id/reviews/:reviewId/delete", mediaController.deleteReview);
 
+router.post("/tags/add", mediaController.addTag);
+router.post("/media/:id/tags/update", mediaController.updateMediaTags);
+router.post("/tags/:id/edit", mediaController.updateTag);
+router.post("/tags/:id/delete", mediaController.deleteTag);
+
 export default router;

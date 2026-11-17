@@ -1,0 +1,35 @@
+<!-- Add Tag Modal -->
+<div class="modal fade" id="addTagModal" tabindex="-1"
+     aria-labelledby="addTagModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTagModalLabel">Create Tag</h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form action="/tags/add" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tagName" class="form-label">Tag Name</label>
+                        <input type="text" class="form-control"
+                               id="tagName" name="name"
+                               placeholder="Enter a tag name" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Create Tag
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

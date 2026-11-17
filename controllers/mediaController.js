@@ -1,6 +1,7 @@
 import media from "../services/mediaServices.js";
 import trackers from "../services/trackerServices.js";
 import reviews from "../services/reviewsServices.js";
+import tags from "../services/tagServices.js";
 
 const addMedia = (req, res)=>{
     const { title, category, description, rating } = req.body;
@@ -210,7 +211,6 @@ const addReview = (req, res)=>{
     }
 
     reviews.addReview(mediaId, bodyText.trim());
-
     res.redirect(`/details/${mediaId}`);
 };
 
@@ -218,28 +218,24 @@ const updateReview = (req, res)=>{
     const { bodyText } = req.body;
     const mediaId = req.params.id;
     const reviewId = req.params.reviewId;
-
     const review = reviews.getReviewById(reviewId);
 
     //Check that the review belongs to this media
     if(!review || review.mediaId !== Number(mediaId)){
         return res.status(404).send("Review not found.");
     }
-
     //Validate review
     if(!bodyText || bodyText.trim() === ""){
         return res.status(400).send("Review cannot be empty.");
     }
 
     reviews.updateReview(reviewId, bodyText.trim());
-
     res.redirect(`/details/${mediaId}`);
 };
 
 const deleteReview = (req, res)=>{
     const mediaId = req.params.id;
     const reviewId = req.params.reviewId;
-
     const review = reviews.getReviewById(reviewId);
 
     //Check that the review belongs to this media
@@ -248,8 +244,63 @@ const deleteReview = (req, res)=>{
     }
 
     reviews.deleteReview(reviewId);
-
     res.redirect(`/details/${mediaId}`);
+};
+
+const addTag = (req, res)=>{
+    const { name } = req.body;
+    //Validate tag name
+    if(!name || name.trim() === ""){
+        return res.status(400).send("Tag name cannot be empty.");
+    }
+
+    tags.addTag(name.trim());
+    res.redirect("/collections");
+};
+
+const updateMediaTags = (req, res)=>{
+    const mediaId = req.params.id;
+    let { tagIds } = req.body;
+
+    //Check that the media exists
+    const selectedMedia = media.getMediaById(mediaId);
+    if(!selectedMedia){
+        return res.status(404).send("Media not found.");
+    }
+    //Handle no selected tags
+    if(!tagIds){
+        tagIds = [];
+    } else if(!Array.isArray(tagIds)){
+        tagIds = [tagIds];
+    }
+
+    tags.updateMediaTags(mediaId, tagIds);
+    res.redirect(`/details/${mediaId}`);
+};
+
+const updateTag = (req, res)=>{
+    const { name } = req.body;
+    const tagId = req.params.id;
+    if(!name || name.trim() === ""){
+        return res.status(400).send("Tag name cannot be empty.");
+    }
+
+    const updatedTag = tags.updateTag(tagId, name.trim());
+    if(!updatedTag){
+        return res.status(404).send("Tag not found.");
+    }
+
+    res.redirect("/collections");
+};
+
+const deleteTag = (req, res)=>{
+    const tagId = req.params.id;
+    const deletedTag = tags.deleteTag(tagId);
+    if(!deletedTag){
+        return res.status(404).send("Tag not found.");
+    }
+
+    res.redirect("/collections");
 };
 
 export default {
@@ -261,4 +312,8 @@ export default {
     addReview,
     updateReview,
     deleteReview,
+    addTag,
+    updateMediaTags,
+    updateTag,
+    deleteTag,
 };

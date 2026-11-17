@@ -38,9 +38,18 @@
 
                 <!-- Tags -->
                 <div class="mb-4">
-                    <% tags.forEach(tag => { %>
-                        <span class="badge text-bg-secondary me-1"><%= tag.name %></span>
-                    <% }) %>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <% tags.forEach(tag => { %>
+                            <span class="badge text-bg-secondary">
+                                <%= tag.name %>
+                            </span>
+                        <% }) %>
+
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#assignTagsModal">
+                            Manage Tags
+                        </button>
+                    </div>
                 </div>
 
                 <h4>Description</h4>
@@ -205,6 +214,7 @@
             </section>
 
 <%- include("partials/editMediaModal", { media }) %>
+<%- include("partials/assignTagsModal", { media, tags, allTags }) %>
     <% if (tracker) { %>
         <%- include("partials/editTrackerModal", { media, tracker }) %>
     <% } else { %>
