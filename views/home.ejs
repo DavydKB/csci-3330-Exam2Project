@@ -2,7 +2,10 @@
 <main class="container my-5">
     <!-- Welcome -->
     <section class="mb-5">
-        <h1>Welcome back!</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">Welcome back.</h1>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMediaModal"> Add Media </button>
+        </div>
         <p class="text-muted">Your personal media library at a glance.</p>
     </section>
 
@@ -52,8 +55,8 @@
                                 <div class="col-4">
                                     <% if (item.coverImage) { %>
                                         <img src="<%= item.coverImage %>"
-                                             alt="<%= item.title %>"
-                                             class="img-fluid rounded-start media-image">
+                                            alt="<%= item.title %>"
+                                            class="img-fluid rounded-start media-image">
                                     <% } else { %>
                                         <div class="image-placeholder">No Image</div>
                                     <% } %>
@@ -63,9 +66,25 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><%= item.title %></h5>
                                         <p class="text-muted mb-1"><%= item.category %></p>
-                                        <p class="mb-0">
+                                        <p class="mb-1">
                                             <strong><%= item.rating %>/10</strong>
                                         </p>
+
+                                        <% const tracker = trackers.find(t => t.mediaId === item.id); %>
+                                        <% if (tracker) { %>
+                                            <p class="mb-1">
+                                                <strong>Status:</strong> <%= tracker.status %>
+                                            </p>
+
+                                            <% tracker.progress.forEach(progress => { %>
+                                                <p class="mb-0">
+                                                    <%= progress.unit %>: <%= progress.value %>
+                                                    <% if (progress.total !== undefined) { %>
+                                                        / <%= progress.total %>
+                                                    <% } %>
+                                                </p>
+                                            <% }) %>
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +113,6 @@
             </a>
         </div>
     </section>
-
+    <%- include("partials/addMediaModal") %>
 </main>
-
 <%- include("partials/footer") %>

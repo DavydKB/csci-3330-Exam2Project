@@ -1,0 +1,139 @@
+<!-- Edit Tracking Modal -->
+<div class="modal fade" id="editTrackerModal" tabindex="-1"
+     aria-labelledby="editTrackerModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <form action="/media/<%= media.id %>/tracking/edit" method="POST">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTrackerModalLabel">
+                        Edit Tracking
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label for="editStatus" class="form-label">Status</label>
+                        <select class="form-select" id="editStatus"
+                                name="status" required>
+
+                            <option value="Playing" <%= tracker.status === "Playing" ? "selected" : "" %>>Playing</option>
+                            <option value="Watching" <%= tracker.status === "Watching" ? "selected" : "" %>>Watching</option>
+                            <option value="Reading" <%= tracker.status === "Reading" ? "selected" : "" %>>Reading</option>
+                            <option value="Completed" <%= tracker.status === "Completed" ? "selected" : "" %>>Completed</option>
+                            <option value="On Hold" <%= tracker.status === "On Hold" ? "selected" : "" %>>On Hold</option>
+                            <option value="Dropped" <%= tracker.status === "Dropped" ? "selected" : "" %>>Dropped</option>
+                            <option value="Plan to Play" <%= tracker.status === "Plan to Play" ? "selected" : "" %>>Plan to Play</option>
+                            <option value="Plan to Watch" <%= tracker.status === "Plan to Watch" ? "selected" : "" %>>Plan to Watch</option>
+                            <option value="Plan to Read" <%= tracker.status === "Plan to Read" ? "selected" : "" %>>Plan to Read</option>
+                        </select>
+                    </div>
+
+                    <!-- Progress -->
+                    <label class="form-label">Progress</label>
+
+                    <div id="editProgressContainer">
+
+                        <% tracker.progress.forEach(progress => { %>
+                            <div class="row g-2 mb-2 progress-row">
+
+                                <div class="col-4">
+                                    <input type="number" step="any"
+                                           class="form-control"
+                                           name="values"
+                                           placeholder="Current"
+                                           value="<%= progress.value %>"
+                                           required>
+                                </div>
+
+                                <div class="col-4">
+                                    <input type="number" step="any"
+                                           class="form-control"
+                                           name="totals"
+                                           placeholder="Total"
+                                           value="<%= progress.total !== undefined ? progress.total : '' %>">
+                                </div>
+
+                                <div class="col-3">
+                                    <input type="text" class="form-control"
+                                           name="units"
+                                           placeholder="Unit"
+                                           value="<%= progress.unit %>"
+                                           required>
+                                </div>
+
+                                <div class="col-1">
+                                    <button type="button"
+                                            class="btn btn-danger remove-progress">×</button>
+                                </div>
+
+                            </div>
+                        <% }) %>
+
+                    </div>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                            id="addEditProgressButton">
+                        + Add Progress
+                    </button>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const editProgressContainer = document.getElementById("editProgressContainer");
+    const addEditProgressButton = document.getElementById("addEditProgressButton");
+    if(addEditProgressButton){
+        addEditProgressButton.addEventListener("click", ()=>{
+            const newRow = document.createElement("div");
+            newRow.className = "row g-2 mb-2 progress-row";
+
+            newRow.innerHTML = `
+                <div class="col-4">
+                    <input type="number" step="any" class="form-control"
+                        name="values" placeholder="Current" required>
+                </div>
+
+                <div class="col-4">
+                    <input type="number" step="any" class="form-control"
+                        name="totals" placeholder="Total">
+                </div>
+
+                <div class="col-3">
+                    <input type="text" class="form-control"
+                        name="units" placeholder="Unit" required>
+                </div>
+
+                <div class="col-1">
+                    <button type="button" class="btn btn-danger remove-progress">×</button>
+                </div>
+            `;
+
+            editProgressContainer.appendChild(newRow);
+        });
+    }
+    editProgressContainer.addEventListener("click", (event)=>{
+        if(event.target.classList.contains("remove-progress")){
+            event.target.closest(".progress-row").remove();
+        }
+    });
+</script>

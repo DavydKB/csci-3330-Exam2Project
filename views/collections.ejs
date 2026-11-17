@@ -48,7 +48,10 @@
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
             <% media.forEach(item => { %>
-                <%- include("partials/mediaCard", { item: item }) %>
+                <%- include("partials/mediaCard", {
+                    item: item,
+                    tracker: trackers.find(t => t.mediaId === item.id)
+                }) %>
             <% }) %>
         </div>
     </section>

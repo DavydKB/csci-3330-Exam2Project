@@ -11,7 +11,7 @@
                         data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-                <form action="/media/add" method="POST" enctype="multipart/form-data">
+            <form action="/media/add" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
 
                     <div class="mb-3">
@@ -44,27 +44,92 @@
                                id="rating" name="rating"
                                min="0" max="10" step="0.1" required>
                     </div>
-                        <div class="mb-3">
-                            <label for="coverImage" class="form-label">Cover Image</label>
-                            <input type="file" class="form-control"
-                                id="coverImage" name="coverImage"
-                                accept="image/*">
-                        </div>
-                        <div class="mb-3">
-                            <label for="galleryImages" class="form-label">Gallery Images</label>
-                            <input type="file" class="form-control"
-                                id="galleryImages" name="galleryImages"
-                                accept="image/*" multiple>
-                            <div class="form-text">
-                                You can select multiple images for the gallery (up to 10).
+
+                    <hr>
+                    <h5 class="mb-3">Tracking</h5>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="" selected disabled>Select a status</option>
+                            <option value="Playing">Playing</option>
+                            <option value="Watching">Watching</option>
+                            <option value="Reading">Reading</option>
+                            <option value="Completed">Completed</option>
+                            <option value="On Hold">On Hold</option>
+                            <option value="Dropped">Dropped</option>
+                            <option value="Plan to Play">Plan to Play</option>
+                            <option value="Plan to Watch">Plan to Watch</option>
+                            <option value="Plan to Read">Plan to Read</option>
+                        </select>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="mb-3">
+                        <label class="form-label">Progress</label>
+
+                        <div id="mediaProgressContainer">
+                            <div class="row g-2 mb-2 progress-row">
+                                <div class="col-4">
+                                    <input type="number" step="any"
+                                           class="form-control"
+                                           name="values"
+                                           placeholder="Current"
+                                           required>
+                                </div>
+
+                                <div class="col-4">
+                                    <input type="number" step="any"
+                                           class="form-control"
+                                           name="totals"
+                                           placeholder="Total">
+                                </div>
+
+                                <div class="col-4">
+                                    <input type="text"
+                                           class="form-control"
+                                           name="units"
+                                           placeholder="Unit"
+                                           required>
+                                </div>
                             </div>
                         </div>
+
+                        <button type="button" class="btn btn-outline-secondary btn-sm"
+                                id="addMediaProgressButton">
+                            + Add Progress
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <!-- Cover Image -->
+                    <div class="mb-3">
+                        <label for="coverImage" class="form-label">Cover Image</label>
+                        <input type="file" class="form-control"
+                               id="coverImage" name="coverImage"
+                               accept="image/*">
+                    </div>
+
+                    <!-- Gallery Images -->
+                    <div class="mb-3">
+                        <label for="galleryImages" class="form-label">Gallery Images</label>
+                        <input type="file" class="form-control"
+                               id="galleryImages" name="galleryImages"
+                               accept="image/*" multiple>
+                        <div class="form-text">
+                            You can select multiple images for the gallery (up to 10).
+                        </div>
+                    </div>
+
+                    <!-- External Links -->
                     <div class="mb-3">
                         <label class="form-label">External Links</label>
 
                         <div id="linksContainer">
                             <input type="url" class="form-control mb-2" name="links"
-                                placeholder="https://example.com">
+                                   placeholder="https://example.com">
                         </div>
 
                         <button type="button" class="btn btn-outline-secondary btn-sm"
@@ -87,11 +152,13 @@
         </div>
     </div>
 </div>
+
 <script>
+    // External links
     const linksContainer = document.getElementById("linksContainer");
     const addLinkButton = document.getElementById("addLinkButton");
 
-    addLinkButton.addEventListener("click", () => {
+    addLinkButton.addEventListener("click", ()=>{
         const linkInput = document.createElement("div");
         linkInput.className = "input-group mb-2";
 
@@ -107,9 +174,47 @@
         linksContainer.appendChild(linkInput);
     });
 
-    linksContainer.addEventListener("click", (event) => {
-        if (event.target.classList.contains("remove-link")) {
+    linksContainer.addEventListener("click", (event)=>{
+        if(event.target.classList.contains("remove-link")){
             event.target.closest(".input-group").remove();
+        }
+    });
+
+    // Tracking progress
+    const mediaProgressContainer = document.getElementById("mediaProgressContainer");
+    const addMediaProgressButton = document.getElementById("addMediaProgressButton");
+
+    addMediaProgressButton.addEventListener("click", ()=>{
+        const newRow = document.createElement("div");
+        newRow.className = "row g-2 mb-2 progress-row";
+
+        newRow.innerHTML = `
+            <div class="col-4">
+                <input type="number" step="any" class="form-control"
+                       name="values" placeholder="Current" required>
+            </div>
+
+            <div class="col-4">
+                <input type="number" step="any" class="form-control"
+                       name="totals" placeholder="Total">
+            </div>
+
+            <div class="col-3">
+                <input type="text" class="form-control"
+                       name="units" placeholder="Unit" required>
+            </div>
+
+            <div class="col-1">
+                <button type="button" class="btn btn-danger remove-progress">×</button>
+            </div>
+        `;
+
+        mediaProgressContainer.appendChild(newRow);
+    });
+
+    mediaProgressContainer.addEventListener("click", (event)=>{
+        if(event.target.classList.contains("remove-progress")){
+            event.target.closest(".progress-row").remove();
         }
     });
 </script>

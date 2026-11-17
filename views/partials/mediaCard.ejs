@@ -5,8 +5,8 @@
                 <div class="col-4">
                     <% if (item.coverImage) { %>
                         <img src="<%= item.coverImage %>"
-                            alt="<%= item.title %>"
-                            class="img-fluid rounded-start media-image">
+                             alt="<%= item.title %>"
+                             class="img-fluid rounded-start media-image">
                     <% } else { %>
                         <div class="image-placeholder">No Image</div>
                     <% } %>
@@ -15,12 +15,29 @@
                 <div class="col-8">
                     <div class="card-body">
                         <h5 class="card-title"><%= item.title %></h5>
+
                         <p class="card-text text-muted mb-1">
                             <%= item.category %>
                         </p>
-                        <p class="card-text">
+
+                        <p class="card-text mb-1">
                             <strong><%= item.rating %>/10</strong>
                         </p>
+
+                        <% if (tracker) { %>
+                            <p class="card-text mb-1">
+                                <strong>Status:</strong> <%= tracker.status %>
+                            </p>
+
+                            <% tracker.progress.forEach(progress => { %>
+                                <p class="card-text mb-0">
+                                    <%= progress.unit %>: <%= progress.value %>
+                                    <% if (progress.total !== undefined) { %>
+                                        / <%= progress.total %>
+                                    <% } %>
+                                </p>
+                            <% }) %>
+                        <% } %>
                     </div>
                 </div>
             </div>

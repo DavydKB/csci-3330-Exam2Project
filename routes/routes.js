@@ -5,6 +5,7 @@ import express from "express";
 import pageController from "../controllers/pageController.js";
 import mediaController from "../controllers/mediaController.js";
 
+
 const router = express.Router();
 const storage = multer.diskStorage({
     destination: "public/images/uploads",
@@ -44,6 +45,7 @@ router.post("/media/:id/edit", upload.fields([
 ]), mediaController.updateMedia);
 
 router.post("/media/:id/delete", mediaController.deleteMedia);
-
+router.post("/media/:id/tracking/add", mediaController.addTracker);
+router.post("/media/:id/tracking/edit", mediaController.updateTracker);
 
 export default router;

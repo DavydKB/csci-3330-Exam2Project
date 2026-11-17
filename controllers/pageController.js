@@ -23,7 +23,8 @@ const home = (req, res) => {
         totalMedia,
         inProgress,
         completed,
-        recentMedia
+        recentMedia,
+        trackers: allTrackers
     });
 };
 
@@ -31,6 +32,7 @@ const collection = (req, res)=>{
     res.render("collections",{
         media: media.getMedia(),
         tags: tags.getTags(),
+        trackers: trackers.getTrackers()
     });
 };
 
@@ -39,7 +41,7 @@ const details = (req, res) => {
 
     res.render("details", {
         media: selectedMedia,
-        tracker: trackers.getTrackers().find(t => t.mediaId === Number(req.params.id)),
+        tracker: trackers.getTrackerByMediaId(req.params.id),
         tags: tags.getTags().filter(t => t.mediaIds.includes(Number(req.params.id)))
     });
 };

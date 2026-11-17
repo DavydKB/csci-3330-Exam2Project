@@ -47,26 +47,36 @@
                 <p><%= media.description %></p>
 
                 <hr>
+                    <!-- Tracking -->
+                    <h4>Tracking</h4>
 
-                <!-- Tracking -->
-                <h4>Tracking</h4>
-                <% if (tracker) { %>
-                    <p><strong>Status:</strong> <%= tracker.status %></p>
+                    <% if (tracker) { %>
+                        <p><strong>Status:</strong> <%= tracker.status %></p>
 
-                    <% if (tracker.progress) { %>
-                        <p>
-                            <strong>Progress:</strong>
-                            <%= tracker.progress.value %>
-                            <% if (tracker.progress.total) { %>
-                                / <%= tracker.progress.total %>
-                            <% } %>
-                            <%= tracker.progress.unit %>
-                        </p>
+                        <% if (tracker.progress && tracker.progress.length > 0) { %>
+                            <% tracker.progress.forEach(progress => { %>
+                                <p>
+                                    <strong><%= progress.unit %>:</strong>
+                                    <%= progress.value %>
+                                    <% if (progress.total !== undefined) { %>
+                                        / <%= progress.total %>
+                                    <% } %>
+                                </p>
+                            <% }) %>
+                        <% } %>
+
+                        <button type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#editTrackerModal">
+                            Edit Tracking
+                        </button>
+
+                    <% } else { %>
+                        <p>Not Started</p>
+                        <button type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#addTrackerModal">
+                            Add Tracking
+                        </button>
                     <% } %>
-                <% } else { %>
-                    <p>Not Started</p>
-                <% } %>
-
                 <hr>
 
                 <!-- Links -->
@@ -103,9 +113,54 @@
         <% } %>
         
 <%- include("partials/editMediaModal", { media }) %>
+    <% if (tracker) { %>
+        <%- include("partials/editTrackerModal", { media, tracker }) %>
+    <% } else { %>
+        <%- include("partials/addTrackerModal", { media }) %>
+    <% } %>
     <% } else { %>
         <h2>Media not found</h2>
         <a href="/collections" class="btn btn-secondary">Back to Collection</a>
     <% } %>
+    <script>
+    const progressContainer = document.getElementById("progressContainer");
+    const addProgressButton = document.getElementById("addProgressButton");
+
+    if(addProgressButton){
+        addProgressButton.addEventListener("click", ()=>{
+            const newRow = document.createElement("div");
+            newRow.className = "row g-2 mb-2 progress-row";
+
+            newRow.innerHTML = `
+                <div class="col-4">
+                    <input type="number" step="any" class="form-control"
+                           name="values" placeholder="Current" required>
+                </div>
+
+                <div class="col-4">
+                    <input type="number" step="any" class="form-control"
+                           name="totals" placeholder="Total">
+                </div>
+
+                <div class="col-3">
+                    <input type="text" class="form-control"
+                           name="units" placeholder="Unit" required>
+                </div>
+
+                <div class="col-1">
+                    <button type="button" class="btn btn-danger remove-progress">×</button>
+                </div>
+            `;
+
+            progressContainer.appendChild(newRow);
+        });
+
+        progressContainer.addEventListener("click", (event)=>{
+            if(event.target.classList.contains("remove-progress")){
+                event.target.closest(".progress-row").remove();
+            }
+        });
+    }
+</script>
 </main>
 <%- include("partials/footer") %>
